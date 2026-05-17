@@ -1,0 +1,21 @@
+{
+    "run": {
+        "count": 10,
+        "delay_min_seconds": 2,
+        "delay_max_seconds": 4
+    },
+    "temp_email_api_base": "https://mail.example.com",
+    "temp_email_domain": "example.com",
+    "verification_timeout_seconds": 120,
+    "mail_poll_interval_seconds": 3,
+    "verify_tls": true,
+    "proxy": "",
+    "browser_proxy": "",
+    "api": {
+        "endpoint": "",
+        "token": "",
+        "append": true,
+        "pool": "basic",
+        "verify_tls": true
+    }
+}

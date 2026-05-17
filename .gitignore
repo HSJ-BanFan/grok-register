@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+logs/
+sso/
+chrome_data/
+config.json
+node_modules/
+.idea/
+CLAUDE.md
