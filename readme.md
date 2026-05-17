@@ -4,6 +4,17 @@
 
 注册完成后自动推送 SSO token 到 [grok2api](https://github.com/chenyme/grok2api) 号池。
 
+> 重要：这个仓库**不包含临时邮箱后端**。使用脚本前，必须先自行部署一个兼容的临时邮箱服务，并拿到它的 API 地址与邮箱域名。可直接参考并部署 [dreamhunter2333/cloudflare_temp_email](https://github.com/dreamhunter2333/cloudflare_temp_email)。
+
+## 先决条件（先做这个）
+
+1. 先部署兼容的临时邮箱服务（推荐直接部署 [dreamhunter2333/cloudflare_temp_email](https://github.com/dreamhunter2333/cloudflare_temp_email)）
+2. 确认它实现了脚本依赖的 3 个接口：`POST /api/new_address`、`GET /api/parsed_mails`、`GET /api/parsed_mail/:id`
+3. 确认你能实际收到 x.ai 验证邮件
+4. 把临时邮箱服务地址填到 `temp_email_api_base`，把邮箱域名填到 `temp_email_domain`
+
+如果还没部署临时邮箱，请先完成这一步，再继续安装和运行本仓库。
+
 ## 特性
 
 - 自定义临时邮箱 API（默认示例为 `https://mail.example.com`）
@@ -30,6 +41,8 @@
 
 ## 安装
 
+完成上面“先决条件”后，再安装本项目依赖：
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -46,6 +59,8 @@ pip install playwright && python -m playwright install chromium && python -m pla
 ---
 
 ## 配置文件（config.json）
+
+部署好临时邮箱服务后，再填写这里的 `temp_email_api_base` 和 `temp_email_domain`。
 
 ```bash
 cp config.example.json config.json
@@ -202,4 +217,4 @@ logs/
 
 - [kevinr229/grok-maintainer](https://github.com/kevinr229/grok-maintainer) — 原始项目
 - [grok2api](https://github.com/chenyme/grok2api) — Grok API 代理
-- [cloudflare_temp_email](https://github.com/ZXMushroom63/cloudflare_temp_email) — 可替换临时邮箱方案参考
+- [dreamhunter2333/cloudflare_temp_email](https://github.com/dreamhunter2333/cloudflare_temp_email) — 临时邮箱后端部署项目
