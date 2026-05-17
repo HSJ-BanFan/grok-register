@@ -197,7 +197,18 @@ def refresh_active_page():
     return page
 
 
+
+def accept_cookies_if_present():
+    try:
+        cookie_btn = page.ele("#onetrust-accept-btn-handler", timeout=2)
+        if cookie_btn:
+            cookie_btn.click()
+            time.sleep(0.5)
+    except Exception:
+        pass
+
 def open_signup_page():
+
     # 每轮开始时打开注册页，并切到“使用邮箱注册”流程。
     global page
     refresh_active_page()
@@ -892,6 +903,15 @@ return String(challengeInput.value || '').trim() === String(token || '').trim();
                     print("[*] Turnstile 响应已同步到最终注册表单。")
 
         time.sleep(1.2)
+
+        # Try to close cookie banner if it blocks the submit button
+        try:
+            cookie_btn = page.ele('#onetrust-accept-btn-handler', timeout=1)
+            if cookie_btn:
+                cookie_btn.click()
+                time.sleep(0.5)
+        except Exception:
+            pass
 
         try:
             submit_button = page.ele('tag:button@@text()=完成注册') or page.ele('tag:button@@text():Create Account') or page.ele('tag:button@@text():Sign up')
