@@ -11,6 +11,15 @@
     "verify_tls": true,
     "proxy": "",
     "browser_proxy": "",
+    "imap": {
+        "enabled": false,
+        "server": "imap.gmail.com",
+        "port": 993,
+        "user": "your-gmail@gmail.com",
+        "password": "",
+        "password_env": "GMAIL_APP_PASSWORD",
+        "search_filter": "(FROM \"info@x.ai\")"
+    },
     "api": {
         "endpoint": "",
         "token": "",
