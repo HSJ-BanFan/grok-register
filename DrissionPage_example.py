@@ -144,6 +144,7 @@ def start_browser():
     global browser, page, _chrome_temp_dir
     _chrome_temp_dir = tempfile.mkdtemp(prefix="chrome_run_")
     co.set_user_data_path(_chrome_temp_dir)
+    co.auto_port()
     browser = Chromium(co)
     tabs = browser.get_tabs()
     page = tabs[-1] if tabs else browser.new_tab()
@@ -1113,6 +1114,9 @@ def push_sso_to_api(new_tokens: list[str]) -> None:
     elif endpoint.endswith("/admin/api"):
         add_tokens_url = endpoint + "/tokens/add"
         save_tokens_url = endpoint + "/tokens"
+    elif endpoint.endswith("/api/accounts"):
+        add_tokens_url = endpoint
+        save_tokens_url = endpoint
     else:
         add_tokens_url = endpoint + "/admin/api/tokens/add"
         save_tokens_url = endpoint + "/admin/api/tokens"
@@ -1133,7 +1137,10 @@ def push_sso_to_api(new_tokens: list[str]) -> None:
     if not tokens_to_push:
         return
 
-    if append_mode:
+    if endpoint.endswith("/api/accounts"):
+        request_url = endpoint
+        payload = {"accounts": [{"access_token": token, "provider": "grok"} for token in tokens_to_push]}
+    elif append_mode:
         request_url = add_tokens_url
         payload = {"pool": pool, "tokens": tokens_to_push}
     else:
@@ -1253,6 +1260,16 @@ def main():
                 break
             except Exception as error:
                 print(f"[Error] 第 {current_round} 轮失败: {error}")
+                try:
+                    if page:
+                        screenshot_dir = os.path.join(os.path.dirname(__file__), "logs", "screenshots")
+                        os.makedirs(screenshot_dir, exist_ok=True)
+                        ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                        screenshot_path = os.path.join(screenshot_dir, f"error_round_{current_round}_{ts}.png")
+                        page.get_screenshot(path=screenshot_path)
+                        print(f"[*] 错误截图已保存: {screenshot_path}")
+                except Exception as e:
+                    print(f"[Warn] 保存截图失败: {e}")
             finally:
                 restart_browser()
 
