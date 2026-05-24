@@ -215,6 +215,6 @@ logs/
 
 ## 致谢
 
-- [kevinr229/grok-maintainer](https://github.com/kevinr229/grok-maintainer) — 原始项目
+- [ReinerBRO/grok-register](https://github.com/ReinerBRO/grok-register) — 原始项目
 - [grok2api](https://github.com/chenyme/grok2api) — Grok API 代理
 - [dreamhunter2333/cloudflare_temp_email](https://github.com/dreamhunter2333/cloudflare_temp_email) — 临时邮箱后端部署项目

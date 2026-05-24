@@ -145,7 +145,15 @@ def start_browser():
     _chrome_temp_dir = tempfile.mkdtemp(prefix="chrome_run_")
     co.set_user_data_path(_chrome_temp_dir)
     co.auto_port()
-    browser = Chromium(co)
+    for _attempt in range(3):
+        try:
+            browser = Chromium(co)
+            break
+        except Exception as _e:
+            if _attempt == 2:
+                raise
+            print(f"[Debug] 浏览器启动失败 ({_e})，重试 {_attempt + 1}/3...")
+            time.sleep(2)
     tabs = browser.get_tabs()
     page = tabs[-1] if tabs else browser.new_tab()
     return browser, page
@@ -157,6 +165,7 @@ def stop_browser():
     if browser is not None:
         try:
             browser.quit()
+            time.sleep(2)  # 等待 Chrome 进程完全退出，避免端口/目录残留
         except Exception:
             pass
     browser = None
